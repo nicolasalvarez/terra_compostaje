@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { useTranslations, rutas, type Locale } from '../i18n';
-import { empresa, empresaB } from '../data/empresa';
+import { empresa, empresaB, mapaLink } from '../data/empresa';
 import { conBase } from '../base';
 
 interface Props {
@@ -56,7 +56,9 @@ const anio = new Date().getFullYear();
         <ul>
           <li>
             <address>
-              {empresa.direccion}<br />{empresa.ciudad}, {empresa.pais}
+              <a href={mapaLink} target="_blank" rel="noopener" title={t.footer.mapa}>
+                {empresa.direccion}<br />{empresa.ciudad}, {empresa.pais}
+              </a>
             </address>
           </li>
           <li><a href={`tel:${empresa.telefonoInternacional}`}>{empresa.telefonoVisible}</a></li>

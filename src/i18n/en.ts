@@ -206,6 +206,7 @@ const en: typeof es = {
   footer: {
     instagram: 'Terra Compostaje on Instagram',
     linkedin: 'Terra Compostaje on LinkedIn',
+    mapa: 'View the plant on Google Maps',
     bcorpAlt: "Certified B Corporation — view Terra's profile on B Lab",
     lema: 'We transform organic waste to regenerate the Earth.',
     servicios: 'Services',

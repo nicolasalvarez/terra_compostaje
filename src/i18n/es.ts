@@ -204,6 +204,7 @@ export default {
   footer: {
     instagram: 'Terra Compostaje en Instagram',
     linkedin: 'Terra Compostaje en LinkedIn',
+    mapa: 'Ver la planta en Google Maps',
     bcorpAlt: 'Empresa B Certificada — ver el perfil de Terra en B Lab',
     lema: 'Transformamos residuos orgánicos para regenerar la Tierra.',
     servicios: 'Servicios',

@@ -44,6 +44,18 @@ export const empresaB = {
   perfil: 'https://www.bcorporation.net/en-us/find-a-b-corp/company/sello-circular/',
 } as const;
 
+/**
+ * Enlace a la ubicación en Google Maps.
+ *
+ * El formato `maps/search/?api=1&query=` es el que documenta Google y sirve en
+ * todos lados con una sola URL: en escritorio abre Maps en el navegador y en
+ * Android e iOS el sistema lo intercepta y abre la app de Maps si está
+ * instalada. No hace falta detectar el dispositivo ni usar JavaScript.
+ */
+export const mapaLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${empresa.direccion}, ${empresa.ciudad}, ${empresa.provincia}, ${empresa.pais}`,
+)}`;
+
 export const waLink = (texto: string) =>
   `https://wa.me/${empresa.whatsapp}?text=${encodeURIComponent(texto)}`;
 
