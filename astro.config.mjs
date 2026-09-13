@@ -28,5 +28,15 @@ export default defineConfig({
       i18n: { defaultLocale: 'es', locales: { es: 'es-AR', en: 'en' } },
     }),
   ],
-  build: { inlineStylesheets: 'auto' },
+  // Todo el CSS va dentro del HTML en vez de en archivos aparte.
+  //
+  // Son 19,6 KB en dos archivos (4,8 KB comprimidos) y los dos bloquean el
+  // pintado: el navegador no muestra NADA hasta tenerlos. En 4G lenta eso medido
+  // costaba ~1 s de primer pintado. Metidos en el HTML llegan con la misma
+  // respuesta y no hay ida y vuelta que esperar.
+  //
+  // La contra es que el CSS deja de cachearse entre paginas: quien visite varias
+  // se lo baja de nuevo cada vez. Con 4,8 KB comprimidos y un sitio de folleto,
+  // donde la mayoria ve una sola pagina, conviene el primer pintado.
+  build: { inlineStylesheets: 'always' },
 });
