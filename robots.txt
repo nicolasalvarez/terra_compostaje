@@ -1,0 +1,7 @@
+# Robots.txt para Terra Compostaje
+
+User-agent: *
+Allow: /
+
+# Ubicación del sitemap
+Sitemap: https://{{DOMINIO}}/sitemap.xml
