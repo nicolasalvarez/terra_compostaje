@@ -28,7 +28,33 @@
   });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') cerrar();
+    if (e.key === 'Escape' && menu.open) {
+      cerrar();
+      // Devolver el foco al boton, si no queda huerfano en un panel cerrado.
+      menu.querySelector('summary').focus();
+    }
+  });
+
+  // Mientras el panel esta abierto, el tabulador no se tiene que escapar a la
+  // pagina de atras: esta tapada por el fondo oscuro, asi que el visitante veria
+  // el foco desaparecer. Se lo hace dar la vuelta entre el boton y los enlaces
+  // del panel.
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || !menu.open) return;
+
+    var foco = menu.querySelectorAll('summary, a');
+    if (!foco.length) return;
+
+    var primero = foco[0];
+    var ultimo = foco[foco.length - 1];
+
+    if (e.shiftKey && document.activeElement === primero) {
+      e.preventDefault();
+      ultimo.focus();
+    } else if (!e.shiftKey && document.activeElement === ultimo) {
+      e.preventDefault();
+      primero.focus();
+    }
   });
 
   // Bloquear el scroll del fondo mientras el panel esta abierto.
