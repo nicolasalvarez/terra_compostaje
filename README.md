@@ -115,6 +115,41 @@ el dominio en GitHub hay que dejar el registro **sin proxear** (nube gris) hasta
 GitHub emita el certificado, y recién después volver a activar el proxy con SSL/TLS en
 modo **Full**.
 
+## Cabeceras de seguridad
+
+GitHub Pages no deja mandar cabeceras propias, así que van en **Cloudflare → Rules →
+Transform Rules → Modify Response Header**, con la regla aplicada a todo el sitio
+(expresión: `true`). Son seis, para pegar tal cual:
+
+| Cabecera | Valor |
+|---|---|
+| `Content-Security-Policy` | `default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests` |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()` |
+| `Cross-Origin-Opener-Policy` | `same-origin` |
+
+Notas para no romper nada:
+
+- **La CSP es la misma que ya lleva la etiqueta `<meta>` de `Base.astro`**, más
+  `frame-ancestors 'none'` y `upgrade-insecure-requests`, que *solo* funcionan como
+  cabecera real y por eso no están en la etiqueta. Si algún día se cambia una, hay que
+  cambiar la otra: son dos copias del mismo valor.
+- `style-src` necesita `'unsafe-inline'` porque los estilos van dentro del HTML y porque
+  las tarjetas de producto y los logos llevan variables CSS por atributo `style`.
+- `script-src 'self'` alcanza: el único script es `/js/menu.js`. **Si se agrega Google
+  Analytics, Ads o el píxel de Meta hay que sumar sus dominios acá y en la etiqueta**, o
+  el navegador los bloquea en silencio.
+- `Strict-Transport-Security` con `preload` es difícil de revertir: el navegador recuerda
+  el dominio por un año. Conviene ponerla recién cuando el sitio esté en el dominio
+  propio y funcionando por HTTPS, no durante la prueba.
+- `X-Frame-Options` no hace falta si está `frame-ancestors 'none'`, que es su reemplazo
+  moderno y lo entienden todos los navegadores actuales.
+
+Para verificarlas una vez cargadas: `curl -sI https://terracompostaje.com | grep -i
+'content-security\|strict-transport\|referrer\|permissions\|x-content'`.
+
 ## Decisiones que conviene conocer
 
 **Casi sin JavaScript.** El sitio se genera entero como HTML en el momento de
@@ -189,11 +224,10 @@ documentadas en `resources/README.md`.
 - [ ] Banner de cookies con Google Consent Mode v2, antes de instalar el píxel de Meta o
       las etiquetas de Google Ads.
 - [ ] Cifras de impacto actualizadas.
-- [ ] Cabeceras de seguridad por Transform Rules de Cloudflare: `Content-Security-Policy`,
-      `Strict-Transport-Security`, `X-Frame-Options`, `Referrer-Policy`,
-      `Permissions-Policy`. El sitio ya lleva una CSP por etiqueta `<meta>`, pero
-      `frame-ancestors` solo funciona como cabecera real.
+- [ ] Cargar las cabeceras de seguridad en Cloudflare. Los valores exactos están más
+      abajo, en *"Cabeceras de seguridad"*: hay que pegarlos, no hay que decidir nada.
 - [ ] Confirmar la lista de clientes vigente y conseguir los logos que faltan.
+
 
 ## Licencia
 
