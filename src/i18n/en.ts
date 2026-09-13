@@ -59,7 +59,7 @@ const en: typeof es = {
     productos: {
       titulo: 'For those who work the land',
       texto:
-        'Sustratos regenerativos® with a physical and chemical analysis for every batch, no weed seeds, and logistics taken care of.',
+        'Compostaje Regenerativo® with a physical and chemical analysis for every batch, no weed seeds, and logistics taken care of.',
       items: [
         'Compost, Landscaping Substrate and Growing Substrate',
         'Bulk, big bag and 15 or 30 litre bags',
@@ -125,7 +125,8 @@ const en: typeof es = {
 
   productos: {
     eyebrow: 'Products',
-    titulo: 'Sustratos regenerativos®',
+    // Es una marca: no se traduce. El ® va como <sup> en Productos.astro.
+    titulo: 'Compostaje Regenerativo',
     bajada:
       'A product of the circular economy: they improve soil structure and fertility.',
     nombres: {

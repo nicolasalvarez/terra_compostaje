@@ -57,7 +57,7 @@ export default {
     productos: {
       titulo: 'Para quien trabaja la tierra',
       texto:
-        'Sustratos regenerativos® con análisis físico-químico por lote, sin semillas de malezas y con la logística resuelta.',
+        'Compostaje Regenerativo® con análisis físico-químico por lote, sin semillas de malezas y con la logística resuelta.',
       items: [
         'Compost, Sustrato Paisajismo y Sustrato Cultivo',
         'Granel, big bag y bolsas de 15 y 30 litros',
@@ -123,7 +123,8 @@ export default {
 
   productos: {
     eyebrow: 'Productos',
-    titulo: 'Sustratos regenerativos®',
+    // El ® va como <sup> en Productos.astro, por eso no esta en el texto.
+    titulo: 'Compostaje Regenerativo',
     bajada:
       'Producto de la economía circular: mejoran la estructura y la fertilidad del suelo.',
     nombres: {

@@ -15,3 +15,11 @@ export const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
 export function conBase(ruta: string): string {
   return `${base}${ruta}`;
 }
+
+/**
+ * Verdadero cuando el sitio se construye para el preview de GitHub Pages.
+ *
+ * Es el mismo interruptor que `base`: se deduce de que haya prefijo, no de una
+ * segunda variable. Asi no existe el caso de apagar el preview a medias.
+ */
+export const esPreview = base !== '';

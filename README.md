@@ -71,11 +71,13 @@ src/
 public/
 ├── fuentes/        Outfit y Montserrat autoalojadas
 ├── marca/          logotipos y sellos en SVG
-├── robots.txt
 └── CNAME           el dominio propio
 
 resources/          material de marca curado (ver resources/README.md)
 ```
+
+El `robots.txt` no está en `public/`: lo genera `src/pages/robots.txt.ts`, para que
+dependa del modo preview.
 
 ## Despliegue
 
@@ -169,6 +171,13 @@ tres años. El logo es marca registrada de B Lab y tiene reglas de uso estrictas
 documentadas en `resources/README.md`.
 
 ## Pendientes antes de publicar
+
+- [ ] **Salir del modo preview**: borrar del workflow el bloque `env` con `PREVIEW` y el
+      paso *"Quitar el dominio propio"*. Es lo único que hay que recordar a mano: el
+      prefijo de las rutas, el `robots.txt` y el `CNAME` se acomodan solos.
+
+- [ ] Apuntar el DNS a GitHub Pages (hoy `terracompostaje.com` resuelve al hosting
+      anterior) y configurar el dominio en **Settings → Pages**.
 
 - [ ] Confirmar el LinkedIn. El sitio viejo enlaza a un perfil con formato personal
       (`/in/terra-compostaje-32104b248/`) que a un visitante sin cuenta le muestra un muro

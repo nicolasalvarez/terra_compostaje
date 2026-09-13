@@ -19,7 +19,7 @@
 vigencia: "2026-07"        # mes al que corresponden estos precios
 actualizado: "2026-09-13"  # última vez que se tocó este archivo
 
-# Sustratos regenerativos® — los tres productos principales
+# Compostaje Regenerativo® — los tres productos principales
 productos:
   - id: compost
     formatos:
