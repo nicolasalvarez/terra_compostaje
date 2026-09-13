@@ -1,0 +1,336 @@
+---
+import Logo from './Logo.astro';
+import { useTranslations, otroIdioma, rutas, type Locale, type Pagina } from '../i18n';
+import { conBase } from '../base';
+
+interface Props {
+  locale: Locale;
+  pagina: Pagina;
+}
+const { locale, pagina } = Astro.props;
+const t = useTranslations(locale);
+const otro = otroIdioma(locale);
+const home = rutas.home[locale];
+// El prefijo tiene que ser SIEMPRE la home, nunca cadena vacia. En español
+// `home` es '/', y el ternario que habia aca lo convertia en '' : el enlace
+// quedaba como "#seccion", relativo a la pagina actual. Desde /privacidad/ o
+// /terminos/ eso no lleva a ningun lado. En ingles no se notaba porque `home`
+// es '/en' y el prefijo sobrevivia.
+// El orden tiene que ser el mismo en que aparecen las secciones en la home.
+// Si no, al recorrer el menu de izquierda a derecha la pagina sube y baja.
+// Orden real: Caminos (#soluciones) -> Impacto -> Proceso -> Productos.
+const secciones = [
+  { href: `${home}#soluciones`, texto: t.nav.soluciones },
+  { href: `${home}#impacto`, texto: t.nav.impacto },
+  { href: `${home}#proceso`, texto: t.nav.planta },
+  { href: `${home}#productos`, texto: t.nav.productos },
+];
+---
+
+<header class="header">
+  <nav class="nav" aria-label={t.nav.menu}>
+    <a href={home} class="marca">
+      <Logo clase="marca-img" />
+      <span class="sr-only">Terra Compostaje</span>
+    </a>
+
+    <ul class="menu">
+      {secciones.map((s) => (
+        <li><a href={s.href}>{s.texto}</a></li>
+      ))}
+    </ul>
+
+    <a
+      class="idioma"
+      href={rutas[pagina][otro]}
+      hreflang={otro === 'es' ? 'es-AR' : 'en'}
+      title={t.nav.cambiarIdioma}
+    >
+      {t.nav.otroIdioma}
+    </a>
+
+    <a href={`${home}#contacto`} class="btn btn-naranja btn-sm cotizar">
+      {t.nav.cotizar}
+    </a>
+
+    {/*
+      Menu de telefono. Es un <details> nativo a proposito: abre y cierra sin
+      JavaScript, y el navegador ya lo anuncia a los lectores de pantalla como
+      un desplegable. El script de abajo solo agrega comodidades (cerrar al
+      elegir una seccion, al tocar afuera y con Escape); si falla o esta
+      bloqueado, el menu igual funciona.
+      Los enlaces estan duplicados respecto de .menu, que es el patron habitual
+      de menu responsive: solo uno de los dos existe a la vez, porque el otro
+      esta con `display: none` y por lo tanto fuera del arbol de accesibilidad.
+    */}
+    <details class="movil">
+      <summary aria-label={t.nav.menu}>
+        <span class="barras" aria-hidden="true"></span>
+      </summary>
+
+      <div class="panel">
+        <ul>
+          {secciones.map((s) => (
+            <li><a href={s.href}>{s.texto}</a></li>
+          ))}
+        </ul>
+        <a href={`${home}#contacto`} class="btn btn-naranja cotizar-panel">
+          {t.nav.cotizar}
+        </a>
+      </div>
+    </details>
+  </nav>
+</header>
+
+<!-- Ver public/js/menu.js: tiene que ser un archivo aparte porque la CSP
+     del sitio no permite scripts en linea. `defer` para no bloquear el pintado;
+     el menu funciona igual antes de que cargue. -->
+<script src={conBase("/js/menu.js")} defer is:inline></script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--linea);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 12px var(--gutter);
+  }
+
+  .marca {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .marca :global(.marca-img) {
+    height: 42px;
+    width: auto;
+  }
+
+  .menu {
+    display: flex;
+    gap: 26px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .menu a {
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .menu a:hover {
+    border-color: var(--naranja);
+  }
+
+  .idioma {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 6px 10px;
+    border: 1px solid var(--linea);
+    border-radius: 999px;
+    color: var(--tinta-60);
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  .idioma:hover {
+    color: var(--tinta);
+    border-color: var(--tinta-25);
+  }
+
+  /* --- Menu de telefono ----------------------------------------------- */
+
+  .movil {
+    display: none;
+    /* Crea el contexto de apilamiento del menu, para que el fondo oscuro, el
+       panel y la hamburguesa se ordenen entre ellos y por encima del resto
+       del header (logo y selector de idioma). */
+    position: relative;
+    z-index: 50;
+  }
+
+  /* Fondo oscuro sobre el resto de la pagina. Va como pseudo-elemento del
+     propio <details> y no del panel: adentro del panel, un `z-index: -1` se
+     pinta por encima del fondo blanco del panel y lo ensuciaba. */
+  .movil[open]::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: rgba(42, 54, 83, 0.42);
+  }
+
+  /* El boton de hamburguesa. `z-index` alto para que quede por encima del
+     panel: abierto se convierte en la X que lo cierra. */
+  .movil > summary {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 44px; /* area tactil comoda, por encima del minimo de 24 px */
+    height: 44px;
+    margin-right: calc(var(--gutter) * -0.35);
+    list-style: none;
+    cursor: pointer;
+    border-radius: 999px;
+  }
+
+  /* Safari todavia pinta el triangulito con este pseudo-elemento. */
+  .movil > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .movil > summary:focus-visible {
+    outline: 2px solid var(--naranja);
+    outline-offset: 2px;
+  }
+
+  /* Tres barras con un solo elemento: el propio span y sus dos pseudos. */
+  .barras,
+  .barras::before,
+  .barras::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--tinta);
+    border-radius: 2px;
+    transition:
+      transform 0.22s ease,
+      background-color 0.15s;
+  }
+
+  .barras {
+    position: relative;
+  }
+
+  .barras::before,
+  .barras::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .barras::before {
+    top: -7px;
+  }
+  .barras::after {
+    top: 7px;
+  }
+
+  /* Abierto: la barra del medio desaparece y las otras dos forman la X. */
+  .movil[open] .barras {
+    background: transparent;
+  }
+  .movil[open] .barras::before {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .movil[open] .barras::after {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .panel {
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 1;
+    width: min(78vw, 320px);
+    padding: 88px 26px 32px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--blanco);
+    border-left: 1px solid var(--linea);
+    box-shadow: -18px 0 44px rgba(42, 54, 83, 0.16);
+  }
+
+  .panel ul {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .panel li + li a {
+    border-top: 1px solid var(--linea);
+  }
+
+  .panel ul a {
+    display: block;
+    padding: 14px 0;
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--tinta);
+  }
+
+  .cotizar-panel {
+    display: block;
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    /* OJO: `backdrop-filter` convierte al header en bloque contenedor de los
+       `position: fixed` que tiene adentro. Con el puesto, el panel del menu se
+       posicionaba respecto del header y quedaba recortado a su altura en vez
+       de ocupar la pantalla entera. Como el fondo ya es casi opaco, en
+       telefono se saca el desenfoque y se pinta blanco liso. */
+    .header {
+      background: var(--blanco);
+      backdrop-filter: none;
+    }
+
+    .menu {
+      display: none;
+    }
+    .movil {
+      display: block;
+    }
+    .marca :global(.marca-img) {
+      height: 36px;
+    }
+    .nav {
+      gap: 14px;
+    }
+  }
+
+  /* En telefono el boton de cotizar no entra al lado del logo, el selector de
+     idioma y la hamburguesa: pasa a ser el primer elemento del panel. En
+     tablet si entra y conviene tenerlo siempre a la vista. */
+  @media (max-width: 620px) {
+    .cotizar {
+      display: none;
+    }
+  }
+
+  @media (min-width: 621px) {
+    .cotizar-panel {
+      display: none;
+    }
+  }
+
+  /* Respetar a quien pidio menos movimiento en el sistema operativo. */
+  @media (prefers-reduced-motion: reduce) {
+    .barras,
+    .barras::before,
+    .barras::after {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Credenciales from '../components/Credenciales.astro';
+import Caminos from '../components/Caminos.astro';
+import Impacto from '../components/Impacto.astro';
+import Proceso from '../components/Proceso.astro';
+import Productos from '../components/Productos.astro';
+import Diferenciales from '../components/Diferenciales.astro';
+import Clientes from '../components/Clientes.astro';
+import Cta from '../components/Cta.astro';
+
+const locale = 'es' as const;
+---
+
+<Base locale={locale} pagina="home">
+  <Hero locale={locale} />
+  <Credenciales locale={locale} />
+  <Caminos locale={locale} />
+  <Impacto locale={locale} />
+  <Proceso locale={locale} />
+  <Productos locale={locale} />
+  <Diferenciales locale={locale} />
+  <Clientes locale={locale} />
+  <Cta locale={locale} />
+</Base>

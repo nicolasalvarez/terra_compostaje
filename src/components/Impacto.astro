@@ -1,0 +1,125 @@
+---
+import { useTranslations, formatearFecha, type Locale } from '../i18n';
+import { impacto } from '../data/empresa';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const nf = new Intl.NumberFormat(locale === 'es' ? 'es-AR' : 'en-GB');
+
+const cifras = [
+  { n: nf.format(impacto.toneladasTratadas), u: 't', l: t.impacto.cifras.toneladas },
+  { n: nf.format(impacto.co2Evitado), u: 't CO₂eq', l: t.impacto.cifras.co2 },
+  { n: nf.format(impacto.arbolesPlantados), u: null, l: t.impacto.cifras.arboles },
+  { n: nf.format(impacto.compostProducido), u: 'm³', l: t.impacto.cifras.compost },
+];
+---
+
+<section class="sec sec-papel" id="impacto">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">{t.impacto.eyebrow}</span>
+      <h2>{t.impacto.titulo}</h2>
+      <p>{t.impacto.bajada}</p>
+    </div>
+
+    <ul class="cifras">
+      {cifras.map((c) => (
+        <li class="cifra">
+          <p class="n">{c.n}{c.u && <small>{c.u}</small>}</p>
+          <p class="l">{c.l}</p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="nota">{t.impacto.nota(formatearFecha(impacto.fecha, locale))}</p>
+  </div>
+</section>
+
+<style>
+  .cifras {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(12px, 1.6vw, 20px);
+    margin: clamp(28px, 3.5vw, 44px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Tarjetas azules llenas. El radio de 22 px es el de las tarjetas grandes
+     del resto del sitio. */
+  .cifra {
+    padding: clamp(22px, 2.4vw, 28px) clamp(20px, 2.2vw, 26px);
+    background: var(--tinta);
+    border-radius: 22px;
+  }
+
+  .n {
+    font-family: var(--display);
+    font-size: clamp(38px, 5vw, 58px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+    color: var(--lima); /* 8,3:1 sobre el azul */
+  }
+
+  .n small {
+    margin-left: 0.15em;
+    font-size: 0.42em;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--blanco);
+  }
+
+  .l {
+    max-width: 24ch;
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.78); /* 8:1 sobre el azul */
+  }
+
+  .nota {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    margin-top: 26px;
+    font-size: 12.5px;
+    color: var(--tinta-60);
+  }
+
+  .nota::before {
+    content: '';
+    flex: none;
+    width: 26px;
+    height: 1px;
+    background: var(--tinta-25);
+    transform: translateY(-4px);
+  }
+
+  @media (max-width: 860px) {
+    .cifras {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cifra,
+    .cifra:first-child {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--linea);
+    }
+    .cifra:nth-child(2n) {
+      border-right: 0;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .cifras {
+      grid-template-columns: 1fr;
+    }
+    .cifra {
+      border-right: 0;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { empresa } from '../../data/empresa';
+import { precios, formatearVigencia } from '../../data/precios';
+
+const actualizado = '13 September 2026';
+const vigencia = formatearVigencia(precios.vigencia, 'en');
+---
+
+<Legal
+  locale="en"
+  pagina="terminos"
+  titulo="Terms and conditions"
+  descripcion="Terms of use for the Terra Compostaje website, the scope of published prices, and intellectual property."
+  actualizado={actualizado}
+  etiquetaActualizado="Last updated:"
+>
+  <h2>Ownership</h2>
+  <p>
+    The site <strong>{empresa.dominio}</strong> belongs to {empresa.razonSocial}, trading as
+    {' '}{empresa.nombre}, with offices at {empresa.direccion}, {empresa.ciudad}, Argentina.
+    We are registered as a waste operator under No. {empresa.registroOperador} with the
+    Municipality of Córdoba.
+  </p>
+  <p>
+    By browsing this site you accept these terms. If you do not agree with them, please do
+    not use it.
+  </p>
+
+  <h2>Published prices</h2>
+  <p>
+    The prices in the catalogue are those in effect for <strong>{vigencia}</strong> and are
+    published for information, so that you can size your project.
+  </p>
+  <ul>
+    <li>They are in Argentine pesos and <strong>do not include VAT</strong>.</li>
+    <li><strong>They do not include transport</strong>, which is quoted by destination and volume.</li>
+    <li>They may change without prior notice.</li>
+    <li>
+      They are not a binding offer. A transaction is formed by a written quotation issued by
+      us and accepted by you.
+    </li>
+    <li>Wholesale volumes are handled under separate terms: please ask.</li>
+  </ul>
+
+  <h2>About the products</h2>
+  <p>
+    Our substrates are organic soil amendments produced by industrial composting. Every batch
+    has its own physical and chemical analysis, available on request. Composition figures may
+    vary between batches, within the ranges permitted by current regulations.
+  </p>
+  <p>
+    Published usage recommendations are indicative. Results depend on the soil, the crop, the
+    climate and management practices, all of which are outside our control.
+  </p>
+
+  <h2>Intellectual property</h2>
+  <p>
+    The marks <strong>Terra</strong>, <strong>Compostaje Regenerativo®</strong> and
+    {' '}<strong>Sustratos regenerativos®</strong>, together with the logotype, the seals and
+    the graphic system, are owned by {empresa.razonSocial} and may not be reproduced without
+    written authorisation.
+  </p>
+  <p>
+    Client and partner logos shown on this site belong to their respective owners and are
+    displayed with their authorisation, solely to identify genuine commercial and
+    institutional relationships.
+  </p>
+
+  <h2>Third-party links</h2>
+  <p>
+    We may link to sites we do not control. We are not responsible for their content or their
+    privacy practices.
+  </p>
+
+  <h2>Liability</h2>
+  <p>
+    We take reasonable care to keep the information published here accurate and current, but
+    we do not guarantee that the site will be uninterrupted or error-free. Where anything
+    published here differs from a signed quotation or contract, the latter prevails.
+  </p>
+
+  <h2>Governing law and jurisdiction</h2>
+  <p>
+    These terms are governed by the laws of the Argentine Republic. For any dispute, the
+    parties submit to the ordinary courts of the city of Córdoba, waiving any other
+    jurisdiction.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Write to <a href={`mailto:${empresa.email}`}>{empresa.email}</a> or call
+    {' '}{empresa.telefonoInternacional}.
+  </p>
+</Legal>

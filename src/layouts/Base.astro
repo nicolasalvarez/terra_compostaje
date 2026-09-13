@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { useTranslations, rutas, type Locale, type Pagina } from '../i18n';
+import { empresa } from '../data/empresa';
+import { conBase } from '../base';
+
+interface Props {
+  locale: Locale;
+  pagina: Pagina;
+  titulo?: string;
+  descripcion?: string;
+}
+
+const { locale, pagina, titulo, descripcion } = Astro.props;
+const t = useTranslations(locale);
+
+const tituloFinal = titulo ?? t.meta.titulo;
+const descFinal = descripcion ?? t.meta.descripcion;
+const canonical = new URL(rutas[pagina][locale], Astro.site).href;
+const alternos = (Object.keys(rutas[pagina]) as Locale[]).map((l) => ({
+  hreflang: l === 'es' ? 'es-AR' : 'en',
+  href: new URL(rutas[pagina][l], Astro.site).href,
+}));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: empresa.nombre,
+  legalName: empresa.razonSocial,
+  url: `https://${empresa.dominio}/`,
+  description: descFinal,
+  email: empresa.email,
+  telephone: empresa.telefonoInternacional,
+  foundingDate: String(empresa.anioFundacion),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: empresa.direccion,
+    addressLocality: empresa.ciudad,
+    addressRegion: empresa.provincia,
+    addressCountry: empresa.paisIso,
+  },
+  sameAs: [empresa.instagram, empresa.linkedin],
+};
+---
+
+<!doctype html>
+<html lang={locale === 'es' ? 'es-AR' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloFinal}</title>
+    <meta name="description" content={descFinal} />
+    <link rel="canonical" href={canonical} />
+    {alternos.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(rutas[pagina].es, Astro.site).href} />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <link rel="icon" href={conBase("/marca/favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={conBase("/marca/favicon.svg")} />
+
+    <link rel="preload" href={conBase("/fuentes/outfit-latin.woff2")} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={conBase("/fuentes/montserrat-latin.woff2")} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={empresa.nombre} />
+    <meta property="og:title" content={tituloFinal} />
+    <meta property="og:description" content={descFinal} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'es' ? 'es_AR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Datos estructurados para buscadores.
+         OJO: `set:html` es una DIRECTIVA que se pone sobre un elemento, no un
+         elemento en si. Escribir `<set:html value={...} />` no da error de build:
+         Astro lo emite como un elemento <set> literal y el JSON-LD queda invisible
+         para Google. Tiene que ir como atributo de la propia etiqueta <script>.
+         `is:inline` evita que Astro intente procesar el bloque. -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip" href="#contenido">{t.saltar}</a>
+    <Header locale={locale} pagina={pagina} />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

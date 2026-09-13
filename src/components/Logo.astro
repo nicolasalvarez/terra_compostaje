@@ -1,0 +1,20 @@
+---
+import { conBase } from '../base';
+interface Props {
+  variante?: 'color' | 'blanco';
+  clase?: string;
+}
+const { variante = 'color', clase } = Astro.props;
+const src = conBase(
+  variante === 'blanco' ? '/marca/logo-terra-blanco.svg' : '/marca/logo-terra-color.svg',
+);
+---
+
+<img
+  src={src}
+  alt="Terra · Compostaje Regenerativo"
+  width="331"
+  height="137"
+  class={clase}
+  decoding="async"
+/>

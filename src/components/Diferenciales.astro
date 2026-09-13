@@ -1,0 +1,78 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const iconos = [
+  '<circle cx="24" cy="24" r="20" stroke="#FF6820" stroke-width="4"/><path d="M15 24.5l6.5 6.5L33 19" stroke="#FF6820" stroke-width="4"/>',
+  '<path d="M4 32V18h22v14" stroke="#FF6820" stroke-width="4"/><path d="M26 22h9l7 8v2H26" stroke="#FF6820" stroke-width="4"/><circle cx="13" cy="35" r="4" stroke="#FF6820" stroke-width="4"/><circle cx="34" cy="35" r="4" stroke="#FF6820" stroke-width="4"/>',
+  '<path d="M24 42V22" stroke="#FF6820" stroke-width="4"/><path d="M24 22c0-8 6-14 14-14 0 8-6 14-14 14Z" stroke="#FF6820" stroke-width="4"/><path d="M24 30c0-7-5-12-12-12 0 7 5 12 12 12Z" stroke="#FF6820" stroke-width="4"/>',
+];
+---
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">{t.diferenciales.eyebrow}</span>
+      <h2>{t.diferenciales.titulo}</h2>
+    </div>
+
+    <ul class="difs">
+      {t.diferenciales.items.map((d, i) => (
+        <li class="dif">
+          <svg class="ic" viewBox="0 0 48 48" fill="none" aria-hidden="true" set:html={iconos[i]} />
+          <h3>{d.titulo}</h3>
+          <p>{d.texto}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .difs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(22px, 3vw, 40px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .dif {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ic {
+    width: 44px;
+    height: 44px;
+  }
+
+  .dif h3 {
+    font-size: 17px;
+  }
+
+  .dif p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--tinta-60);
+  }
+
+  @media (max-width: 880px) {
+    .difs {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .difs {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

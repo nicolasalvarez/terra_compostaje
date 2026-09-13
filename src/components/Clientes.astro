@@ -1,0 +1,118 @@
+---
+import { Image } from 'astro:assets';
+import { useTranslations, type Locale } from '../i18n';
+import { clientes, nombresClientes, alianzas, nombresAlianzas } from '../data/empresa';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const logosClientes = import.meta.glob<{ default: ImageMetadata }>(
+  '../../resources/marca/clientes/*.jpg',
+  { eager: true },
+);
+const logosAlianzas = import.meta.glob<{ default: ImageMetadata }>(
+  '../../resources/marca/alianzas/*.jpg',
+  { eager: true },
+);
+
+const buscar = (mapa: Record<string, { default: ImageMetadata }>, id: string) =>
+  Object.entries(mapa).find(([ruta]) => ruta.endsWith(`/${id}.jpg`))?.[1].default;
+
+/**
+ * Altura que iguala el peso visual de logos con proporciones distintas.
+ *
+ * Con una altura fija, un logotipo cuadrado ocupa como un tercio del area de
+ * uno apaisado y al lado se ve chico, aunque midan lo mismo de alto. Aca se fija
+ * el AREA (k al cuadrado) y se despeja la altura a partir de la proporcion.
+ * Los topes evitan que un logo muy alargado quede ilegible o uno muy cuadrado
+ * se coma la tarjeta.
+ */
+const altoOptico = (img: ImageMetadata, k: number, min: number, max: number) =>
+  Math.round(Math.min(max, Math.max(min, k / Math.sqrt(img.width / img.height))));
+---
+
+<section class="sec sec-papel">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">{t.clientes.eyebrow}</span>
+      <h2>{t.clientes.titulo}</h2>
+    </div>
+
+    <ul class="logos">
+      {clientes.map((id) => {
+        const img = buscar(logosClientes, id);
+        return img ? (
+          <li class="logo">
+            <Image src={img} alt={nombresClientes[id] ?? id} width={300} widths={[150, 300]} sizes="150px" loading="lazy" style={`--alto:${altoOptico(img, 50, 26, 58)}px`} />
+          </li>
+        ) : null;
+      })}
+    </ul>
+
+    <h3 class="eyebrow alianzas-tit">{t.clientes.alianzas}</h3>
+    <ul class="logos logos-alianzas">
+      {alianzas.map((id) => {
+        const img = buscar(logosAlianzas, id);
+        return img ? (
+          <li class="logo">
+            <Image src={img} alt={nombresAlianzas[id] ?? id} width={360} widths={[180, 360]} sizes="180px" loading="lazy" style={`--alto:${altoOptico(img, 56, 30, 64)}px`} />
+          </li>
+        ) : null;
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Cada logo es una tarjeta suelta, con el mismo radio que las credenciales.
+     Antes esto era una tabla de bordes rectos, heredada del prototipo, donde
+     las celdas eran nombres escritos y no logos. Dos motivos para cambiarla:
+     el resto del sitio es todo de esquinas curvas, y aquel tratamiento pintaba
+     el contenedor de gris para que asomara entre las celdas, asi que una ultima
+     fila incompleta dejaba bloques grises sueltos.
+     auto-fit evita ademas que se creen columnas sin nada que poner adentro. */
+  .logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: clamp(8px, 1vw, 12px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .logo {
+    display: grid;
+    place-items: center;
+    min-height: 96px;
+    padding: 18px 14px;
+    background: var(--blanco);
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px var(--linea);
+  }
+
+  /* Los archivos vienen recortados al borde del logo, sin blanco alrededor.
+     Por eso el tope de alto es mas bajo que antes y se ven mas grandes: antes
+     ese alto incluia el margen blanco del archivo y el logo real quedaba en la
+     mitad o menos. Los anchos topan por max-width. */
+  .logo :global(img) {
+    width: auto;
+    max-width: 100%;
+    max-height: var(--alto, 42px);
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .alianzas-tit {
+    display: block;
+    margin: 36px 0 14px;
+  }
+
+  .logos-alianzas {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+
+</style>

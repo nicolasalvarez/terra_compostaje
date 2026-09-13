@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import { useTranslations, type Locale } from '../i18n';
+import f1 from '../../resources/fotos/proceso/cartel-zona-recepcion.jpg';
+import f2 from '../../resources/fotos/proceso/medidor-temperatura-compost.jpg';
+import f3 from '../../resources/fotos/proceso/operario-cartel-zona-maduracion.jpg';
+import f4 from '../../resources/fotos/productos/compost-en-mano.jpg';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const fotos = [f1, f2, f3, f4];
+---
+
+<section class="sec" id="proceso">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">{t.proceso.eyebrow}</span>
+      <h2>{t.proceso.titulo}</h2>
+      <p>{t.proceso.bajada}</p>
+    </div>
+
+    <ol class="pasos">
+      {t.proceso.pasos.map((p, i) => (
+        <li class="paso">
+          <Image
+            src={fotos[i]!}
+            alt={p.altFoto}
+            class="foto"
+            width={520}
+            widths={[260, 520]}
+            sizes="(max-width: 520px) 90vw, (max-width: 880px) 44vw, 260px"
+            loading="lazy"
+          />
+          <span class="num">{t.proceso.etapa} {String(i + 1).padStart(2, '0')}</span>
+          <h3>{p.titulo}</h3>
+          <p>{p.texto}</p>
+          {p.duracion && <span class="dur">{p.duracion}</span>}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pasos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(16px, 2.4vw, 30px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .paso {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .paso :global(.foto) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 22px;
+  }
+
+  .num {
+    display: block;
+    margin-bottom: 10px;
+    padding-top: 16px;
+    border-top: 2px solid var(--tinta);
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--naranja-texto);
+  }
+
+  .paso h3 {
+    margin-bottom: 9px;
+    font-size: 19px;
+  }
+
+  .paso p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--tinta-60);
+  }
+
+  .dur {
+    align-self: flex-start;
+    margin-top: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--lima);
+    color: var(--tinta);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 880px) {
+    .pasos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .pasos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

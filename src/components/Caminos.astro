@@ -1,0 +1,153 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import { waLink } from '../data/empresa';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="sec" id="soluciones">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">{t.caminos.eyebrow}</span>
+      <h2>{t.caminos.titulo}</h2>
+      <p>{t.caminos.bajada}</p>
+    </div>
+
+    <div class="caminos">
+      <article class="camino camino-a">
+        <svg class="forma" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#fff" stroke-width="16"></circle>
+        </svg>
+        <h3>{t.caminos.empresas.titulo}</h3>
+        <p>{t.caminos.empresas.texto}</p>
+        <ul>{t.caminos.empresas.items.map((i) => <li>{i}</li>)}</ul>
+        <a href={waLink(t.cta.mensajeWa)} class="btn btn-claro" target="_blank" rel="noopener">
+          {t.caminos.empresas.cta}
+        </a>
+      </article>
+
+      <article class="camino camino-b">
+        <svg class="forma" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 4C74 30 88 54 88 70c0 16-17 26-38 26S12 86 12 70C12 54 26 30 50 4Z" fill="#FF6820"></path>
+        </svg>
+        <h3>{t.caminos.productos.titulo}</h3>
+        <p set:html={t.caminos.productos.texto.replace('®', '<sup>®</sup>')} />
+        <ul>{t.caminos.productos.items.map((i) => <li>{i}</li>)}</ul>
+        <a href="#productos" class="btn btn-naranja">{t.caminos.productos.cta}</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .caminos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(18px, 2.5vw, 28px);
+  }
+
+  .camino {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: clamp(28px, 3.4vw, 42px);
+    border-radius: 22px;
+    overflow: hidden;
+    color: #fff;
+  }
+
+  .camino-a {
+    background: var(--tinta);
+  }
+
+  /* Tarjeta blanca con marco naranja: es una de las combinaciones que
+     habilita el manual (anillo de color con centro blanco). El naranja
+     pleno no sirve de fondo para texto: no llega al contraste mínimo. */
+  .camino-b {
+    background: var(--blanco);
+    border: 3px solid var(--naranja);
+    color: var(--tinta);
+  }
+
+  /* La especificidad tiene que ganarle a .camino p / .camino li, que
+     bajan la opacidad para el panel oscuro. Con opacidad, el gris no
+     llega al contraste mínimo sobre blanco. */
+  .camino.camino-b p {
+    color: var(--tinta-60);
+    opacity: 1;
+  }
+
+  .camino.camino-b li {
+    color: var(--tinta);
+    opacity: 1;
+  }
+
+  .camino.camino-b li::before {
+    background: var(--naranja);
+    opacity: 1;
+  }
+
+  .camino h3 {
+    font-size: clamp(23px, 2.7vw, 31px);
+  }
+
+  .camino p {
+    max-width: 38ch;
+    font-size: 15.5px;
+    line-height: 1.65;
+    opacity: 0.9;
+  }
+
+  .camino ul {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14.5px;
+  }
+
+  .camino li {
+    position: relative;
+    padding-left: 22px;
+    opacity: 0.92;
+  }
+
+  .camino li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  .camino .btn {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  .forma {
+    position: absolute;
+    right: -40px;
+    bottom: -52px;
+    width: 190px;
+    opacity: 0.14;
+    pointer-events: none;
+  }
+
+  @media (max-width: 820px) {
+    .caminos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

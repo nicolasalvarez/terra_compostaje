@@ -1,0 +1,118 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import { empresaB } from '../data/empresa';
+import { conBase } from '../base';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="creds">
+  <ul class="grid">
+    {t.credenciales.map((c) => (
+      <li class="cred">
+        <b>{c.dato}</b>
+        <span>{c.etiqueta}</span>
+      </li>
+    ))}
+
+    <li class="cred sello">
+      <a href={empresaB.perfil} target="_blank" rel="noopener">
+        <img
+          src={conBase("/marca/empresa-b-certificada.svg")}
+          alt={t.credencialesSelloAlt}
+          width="49"
+          height="72"
+          loading="lazy"
+        />
+      </a>
+    </li>
+  </ul>
+</section>
+
+<style>
+  .creds {
+    background: var(--tinta);
+  }
+
+  /* Ojo: esta grilla NO lleva el color de linea como fondo. En el prototipo lo
+     llevaba, y como ademas tiene padding, el gris se veia como un marco grueso
+     alrededor de las celdas en vez de como divisiones de 1 px. */
+  .grid {
+    display: grid;
+    /* Cuatro credenciales + el sello de Empresa B, que ocupa solo lo que mide. */
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: clamp(10px, 1.2vw, 16px);
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: clamp(24px, 3vw, 32px) var(--gutter);
+    list-style: none;
+  }
+
+  .cred {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 20px;
+    background: var(--blanco);
+    border-radius: 18px;
+  }
+
+  .cred b {
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--tinta);
+  }
+
+  .cred span {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--tinta-60);
+    text-wrap: balance;
+  }
+
+  /* El sello es una credencial mas, pero es una marca registrada: va sin texto
+     al lado y con aire alrededor, que es lo que pide B Lab. */
+  /* Tarjeta azul llena, igual que las cifras de impacto: destaca entre las
+     cuatro blancas sin pelearle el naranja a los botones de accion.
+     Con fondo azul va la version BLANCA del logo (12:1). B Lab admite fondo de
+     color siempre que el logo quede en blanco o negro y contraste. */
+  .sello {
+    display: grid;
+    place-items: center;
+    padding: 16px 22px;
+    background: var(--lima);
+  }
+
+  .sello img {
+    display: block;
+    width: 49px; /* 72 px de alto: el minimo de B Lab para web */
+    height: auto;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* Apilado ocuparia el ancho completo y serian demasiados centimetros de
+       lima. Se queda del tamano del logo, centrado. */
+    .sello {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: max-content;
+      padding: 20px 30px;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

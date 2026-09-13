@@ -1,0 +1,49 @@
+# =====================================================================
+#  PRECIOS · Terra Compostaje
+#
+#  Para actualizar los precios:
+#    1. Cambiá los números de abajo.
+#    2. Cambiá "vigencia" y "actualizado".
+#    3. Guardá. El sitio se actualiza solo en un par de minutos.
+#
+#  Los precios se escriben SIN puntos ni signo $:  85000   (no $85.000)
+#  El sitio les pone el formato solo.
+#
+#  Para agregar o sacar un formato, agregá o borrá una línea de la
+#  lista "formatos". Los nombres que se pueden usar en "formato" son:
+#    granel · bigbag · bolsa30 · bolsa15 · bolsa40
+#  Si necesitás uno nuevo, avisale a quien mantiene el sitio: hay que
+#  agregarle el nombre en los dos idiomas.
+# =====================================================================
+
+vigencia: "2026-07"        # mes al que corresponden estos precios
+actualizado: "2026-09-13"  # última vez que se tocó este archivo
+
+# Sustratos regenerativos® — los tres productos principales
+productos:
+  - id: compost
+    formatos:
+      - { formato: granel,  precio: 85000 }
+      - { formato: bigbag,  precio: 100000 }
+      - { formato: bolsa30, precio: 4000 }
+      - { formato: bolsa15, precio: 2500 }
+
+  - id: paisajismo
+    formatos:
+      - { formato: granel,  precio: 55000 }
+      - { formato: bigbag,  precio: 70000 }
+      - { formato: bolsa30, precio: 3000 }
+
+  - id: cultivo
+    formatos:
+      - { formato: granel,  precio: 110000 }
+      - { formato: bigbag,  precio: 125000 }
+      - { formato: bolsa30, precio: 5000 }
+      - { formato: bolsa15, precio: 3000 }
+
+# Otros productos
+otros:
+  - { id: arbol-forestal,   precio: 5000 }
+  - { id: arbol-4l,         precio: 10000 }
+  - { id: lombricompuesto,  precio: 30000 }
+  - { id: corteza-pino,     precio: 90000 }

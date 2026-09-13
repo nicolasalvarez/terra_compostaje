@@ -1,0 +1,113 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { empresa } from '../../data/empresa';
+
+const actualizado = '13 September 2026';
+---
+
+<Legal
+  locale="en"
+  pagina="privacidad"
+  titulo="Privacy policy"
+  descripcion="How Terra Compostaje handles the personal data of people who visit this site and contact us, under Argentina's Personal Data Protection Act 25.326."
+  actualizado={actualizado}
+  etiquetaActualizado="Last updated:"
+>
+  <h2>Who we are</h2>
+  <p>
+    This site is operated by <strong>{empresa.razonSocial}</strong>, trading as
+    {' '}<strong>{empresa.nombre}</strong>, with registered offices at {empresa.direccion},
+    {' '}{empresa.ciudad}, {empresa.provincia}, Argentina.
+  </p>
+  <p>
+    For any question about this policy, write to
+    {' '}<a href={`mailto:${empresa.email}`}>{empresa.email}</a> or call
+    {' '}{empresa.telefonoInternacional}.
+  </p>
+
+  <h2>What we collect</h2>
+  <h3>Data you give us</h3>
+  <p>
+    When you email us, message us on WhatsApp or fill in a form, we receive whatever you
+    choose to include: typically your name, the company you represent, an email address, a
+    phone number and the details of your enquiry.
+  </p>
+  <h3>Browsing data</h3>
+  <p>
+    Like any website, we record technical data about your visit: IP address, device and
+    browser type, pages viewed and where you came from. We use it in aggregate to understand
+    which content is useful.
+  </p>
+
+  <h2>What we use it for</h2>
+  <ul>
+    <li>Answering your enquiries and preparing commercial proposals.</li>
+    <li>Delivering the services you contract, and issuing certificates and reports.</li>
+    <li>Meeting our legal, tax and environmental obligations.</li>
+    <li>Improving the site and understanding how it is used.</li>
+    <li>
+      Sending you news about our services, only if you have consented. You can withdraw that
+      consent at any time.
+    </li>
+  </ul>
+  <p><strong>We do not sell or transfer your personal data to third parties</strong> for commercial purposes.</p>
+
+  <h2>Cookies and measurement</h2>
+  <p>
+    We use first-party cookies that are necessary for the site to work and to remember your
+    preferences. These do not require consent.
+  </p>
+  <p>
+    We may also use third-party cookies to measure audience and advertising, such as Google
+    Analytics and the Meta pixel. <strong>These are only activated if you accept them</strong>
+    {' '}in the cookie notice. Until you do, those tags are not loaded. You can change your
+    choice at any time from that notice, or by clearing your browser cookies.
+  </p>
+
+  <h2>Who we share data with</h2>
+  <p>
+    Only with the providers we need in order to operate — site hosting, email, measurement
+    tools — and with public authorities where the law requires it. Some of these providers
+    process information on servers outside Argentina; by using the site and contacting us,
+    you accept that transfer.
+  </p>
+
+  <h2>How long we keep it</h2>
+  <p>
+    We keep data for as long as the original purpose requires and then for the periods
+    required by applicable commercial, tax and environmental rules. After that we delete or
+    anonymise it.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    You can ask us at any time to access your personal data, correct it if it is wrong,
+    update it or delete it. Write to
+    {' '}<a href={`mailto:${empresa.email}`}>{empresa.email}</a> telling us what you need.
+  </p>
+
+  <div class="destacado">
+    <p>
+      Under Argentine law, the data subject may exercise the right of access free of charge
+      at intervals of no less than six months, unless a legitimate interest is demonstrated,
+      as set out in section 14(3) of Act No. 25.326.
+    </p>
+    <p>
+      The <strong>Agencia de Acceso a la Información Pública</strong>, as the supervisory
+      authority for Act No. 25.326, is empowered to handle complaints and claims regarding
+      failures to comply with personal data protection rules.
+    </p>
+  </div>
+
+  <h2>Children</h2>
+  <p>
+    This site is aimed at companies, institutions and adults. We do not knowingly collect
+    data from anyone under 18.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If we change it, we will publish the new version on this page and update the date in the
+    heading.
+  </p>
+</Legal>

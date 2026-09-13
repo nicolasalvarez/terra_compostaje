@@ -1,0 +1,94 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import { empresa, waLink } from '../data/empresa';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="cta" id="contacto">
+  <svg class="trama" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      d="M0 90 Q25 20 50 90 T100 90 T150 90 T200 90 T250 90 T300 90 T350 90 T400 90"
+      fill="none"
+      stroke="#FF6820"
+      stroke-width="14"></path>
+    <path
+      d="M0 40 Q25 -30 50 40 T100 40 T150 40 T200 40 T250 40 T300 40 T350 40 T400 40"
+      fill="none"
+      stroke="#3AD76F"
+      stroke-width="14"></path>
+  </svg>
+
+  <div class="in">
+    <div>
+      <h2>{t.cta.titulo}</h2>
+      <p>{t.cta.texto}</p>
+    </div>
+    <div class="botones">
+      <a href={waLink(t.cta.mensajeWa)} class="btn btn-naranja" target="_blank" rel="noopener">
+        {t.cta.whatsapp}
+      </a>
+      <a href={`mailto:${empresa.email}`} class="btn btn-claro">{empresa.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    background: var(--tinta);
+    color: #fff;
+  }
+
+  .trama {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.1;
+  }
+
+  .in {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 36px;
+    align-items: center;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: clamp(56px, 7vw, 90px) var(--gutter);
+  }
+
+  .cta h2 {
+    font-size: clamp(28px, 4vw, 46px);
+    color: #fff;
+  }
+
+  .cta p {
+    max-width: 44ch;
+    margin-top: 16px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .botones {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  @media (max-width: 800px) {
+    .in {
+      grid-template-columns: 1fr;
+    }
+    .botones {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+</style>

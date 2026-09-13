@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import foto from '../../resources/fotos/proceso/manos-guantes-compost-02.jpg';
+import { useTranslations, rutas, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const base = rutas.home[locale];
+---
+
+<section class="hero">
+  <div class="grid">
+    <div>
+      <h1>
+        {t.hero.tituloAntes}{' '}
+        <span class="marcador">{t.hero.tituloResaltado}</span>
+      </h1>
+
+      <p class="bajada">{t.hero.bajada}</p>
+
+      <div class="acciones">
+        <a href={`${base}#soluciones`} class="btn btn-naranja">{t.hero.ctaEmpresas}</a>
+        <a href={`${base}#productos`} class="btn btn-linea">{t.hero.ctaProductos}</a>
+      </div>
+    </div>
+
+    <div class="arte">
+      <Image src={foto} alt={t.hero.altFoto} class="disco" width={720} widths={[360, 720]} sizes="(max-width: 860px) 60vw, 360px" loading="eager" fetchpriority="high" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    border-bottom: 1px solid var(--linea);
+    overflow: hidden;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.85fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    padding-block: clamp(48px, 7vw, 92px) clamp(56px, 7vw, 96px);
+  }
+
+  h1 {
+    font-size: clamp(38px, 6.1vw, 72px);
+  }
+
+  .bajada {
+    max-width: 46ch;
+    margin-top: 22px;
+    font-size: clamp(16px, 1.6vw, 18.5px);
+    line-height: 1.7;
+    color: var(--tinta-60);
+  }
+
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .arte {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 300px;
+  }
+
+  .arte :global(.disco) {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 360px);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .arte {
+      order: -1;
+      min-height: 0;
+    }
+    .arte :global(.disco) {
+      width: min(72%, 260px);
+    }
+  }
+</style>

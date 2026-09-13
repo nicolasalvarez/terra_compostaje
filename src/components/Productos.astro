@@ -1,0 +1,166 @@
+---
+import { useTranslations, type Locale } from '../i18n';
+import { precios, formatearPrecio, formatearVigencia } from '../data/precios';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const colores: Record<string, string> = {
+  compost: 'var(--lima)',
+  paisajismo: 'var(--naranja)',
+  cultivo: 'var(--verde)',
+  otros: 'var(--tinta)',
+};
+
+const vigencia = formatearVigencia(precios.vigencia, locale);
+---
+
+<section class="sec sec-papel" id="productos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">{t.productos.eyebrow}</span>
+      <h2>Sustratos regenerativos<sup>®</sup></h2>
+      <p>{t.productos.bajada}</p>
+    </div>
+
+    <div class="prods">
+      {precios.productos.map((prod) => (
+        <article class="prod">
+          <div class="id">
+            <span class="chip" style={`background:${colores[prod.id]}`} aria-hidden="true"></span>
+            <div>
+              <h3>{t.productos.nombres[prod.id]}</h3>
+              <p class="desc">{t.productos.descripciones[prod.id]}</p>
+            </div>
+          </div>
+          <dl class="precios">
+            {prod.formatos.map((f) => (
+              <div class="fila">
+                <dt>{t.productos.formatos[f.formato]}</dt>
+                <dd>{formatearPrecio(f.precio)}</dd>
+              </div>
+            ))}
+          </dl>
+        </article>
+      ))}
+
+      <article class="prod">
+        <div class="id">
+          <span class="chip" style={`background:${colores.otros}`} aria-hidden="true"></span>
+          <div>
+            <h3>{t.productos.nombres.otros}</h3>
+            <p class="desc">{t.productos.descripciones.otros}</p>
+          </div>
+        </div>
+        <dl class="precios">
+          {precios.otros.map((o) => (
+            <div class="fila">
+              <dt>{t.productos.otros[o.id as keyof typeof t.productos.otros]}</dt>
+              <dd>{formatearPrecio(o.precio)}</dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+    </div>
+
+    <ul class="legal">
+      {t.productos.aclaraciones(vigencia).map((a) => <li>{a}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .prods {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--linea);
+  }
+
+  .prod {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 56px);
+    padding-block: clamp(26px, 3.2vw, 38px);
+    border-bottom: 1px solid var(--linea);
+  }
+
+  .id {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .chip {
+    flex: none;
+    width: 14px;
+    height: 44px;
+    margin-top: 4px;
+    border-radius: 999px;
+  }
+
+  .prod h3 {
+    font-size: clamp(21px, 2.4vw, 27px);
+  }
+
+  .desc {
+    max-width: 44ch;
+    margin-top: 10px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--tinta-60);
+  }
+
+  .precios {
+    align-self: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .fila {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 9px;
+    border-bottom: 1px dotted var(--tinta-25);
+    font-size: 14.5px;
+  }
+
+  .fila:last-child {
+    border-bottom: 0;
+  }
+
+  .fila dt {
+    color: var(--tinta-60);
+  }
+
+  .fila dd {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    margin: 26px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+    color: var(--tinta-60);
+  }
+
+  @media (max-width: 760px) {
+    .prod {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+</style>

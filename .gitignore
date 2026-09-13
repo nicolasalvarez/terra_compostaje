@@ -1,3 +1,12 @@
 .DS_Store
 vendor/bundle/
 vendor/cache/
+
+# Material fuente sin procesar (2 GB): se mantiene solo en local.
+# Lo curado y optimizado vive en resources/
+resources_for_webpage_design/
+
+# Astro
+node_modules/
+dist/
+.astro/

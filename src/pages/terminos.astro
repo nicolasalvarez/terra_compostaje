@@ -1,0 +1,97 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { empresa } from '../data/empresa';
+import { precios, formatearVigencia } from '../data/precios';
+
+const actualizado = '13 de septiembre de 2026';
+const vigencia = formatearVigencia(precios.vigencia, 'es');
+---
+
+<Legal
+  locale="es"
+  pagina="terminos"
+  titulo="Términos y condiciones"
+  descripcion="Condiciones de uso del sitio de Terra Compostaje, alcance de los precios publicados y propiedad intelectual."
+  actualizado={actualizado}
+  etiquetaActualizado="Última actualización:"
+>
+  <h2>Titularidad</h2>
+  <p>
+    El sitio <strong>{empresa.dominio}</strong> pertenece a {empresa.razonSocial}, que opera
+    comercialmente como {empresa.nombre}, con domicilio en {empresa.direccion},
+    {' '}{empresa.ciudad}, {empresa.pais}. Estamos inscriptos como operadores de residuos
+    bajo el N° {empresa.registroOperador} ante la Municipalidad de Córdoba.
+  </p>
+  <p>
+    Al navegar el sitio aceptás estas condiciones. Si no estás de acuerdo, te pedimos que no
+    lo uses.
+  </p>
+
+  <h2>Precios publicados</h2>
+  <p>
+    Los precios que figuran en el catálogo corresponden a <strong>{vigencia}</strong> y se
+    publican a título informativo, para que puedas dimensionar tu proyecto.
+  </p>
+  <ul>
+    <li>Están expresados en pesos argentinos y <strong>no incluyen IVA</strong>.</li>
+    <li><strong>No incluyen el costo de transporte</strong>, que se cotiza según destino y volumen.</li>
+    <li>Pueden modificarse sin aviso previo.</li>
+    <li>
+      No constituyen una oferta vinculante. La operación se perfecciona con un presupuesto
+      escrito emitido por nosotros y aceptado por vos.
+    </li>
+    <li>Para volúmenes mayoristas manejamos condiciones particulares: consultanos.</li>
+  </ul>
+
+  <h2>Sobre los productos</h2>
+  <p>
+    Nuestros sustratos son enmiendas orgánicas elaboradas por compostaje industrial. Cada
+    lote cuenta con su análisis físico-químico, disponible a pedido. Los valores de
+    composición pueden variar entre lotes dentro de los rangos que admite la normativa
+    vigente.
+  </p>
+  <p>
+    Las recomendaciones de uso publicadas son orientativas. El resultado depende del suelo,
+    el cultivo, el clima y el manejo, factores que están fuera de nuestro control.
+  </p>
+
+  <h2>Propiedad intelectual</h2>
+  <p>
+    Las marcas <strong>Terra</strong>, <strong>Compostaje Regenerativo®</strong> y
+    {' '}<strong>Sustratos regenerativos®</strong>, junto con el logotipo, los sellos y el
+    sistema gráfico, son de titularidad de {empresa.razonSocial}. No pueden reproducirse sin
+    autorización escrita.
+  </p>
+  <p>
+    Los logotipos de clientes y aliados que aparecen en el sitio pertenecen a sus
+    respectivos titulares y se muestran con su autorización, al solo efecto de identificar
+    vínculos comerciales e institucionales reales.
+  </p>
+
+  <h2>Enlaces a sitios de terceros</h2>
+  <p>
+    Podemos enlazar a sitios que no controlamos. No respondemos por sus contenidos ni por
+    sus políticas de privacidad.
+  </p>
+
+  <h2>Responsabilidad</h2>
+  <p>
+    Hacemos lo razonable para que la información publicada sea correcta y esté actualizada,
+    pero no garantizamos que el sitio esté disponible sin interrupciones ni libre de errores.
+    Ante cualquier diferencia entre lo publicado acá y lo que diga un presupuesto o contrato
+    firmado, prevalece este último.
+  </p>
+
+  <h2>Ley aplicable y jurisdicción</h2>
+  <p>
+    Estas condiciones se rigen por las leyes de la República Argentina. Ante cualquier
+    controversia, las partes se someten a los tribunales ordinarios de la ciudad de Córdoba,
+    renunciando a cualquier otro fuero.
+  </p>
+
+  <h2>Contacto</h2>
+  <p>
+    Escribinos a <a href={`mailto:${empresa.email}`}>{empresa.email}</a> o llamanos al
+    {' '}{empresa.telefonoVisible}.
+  </p>
+</Legal>
