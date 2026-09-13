@@ -36,8 +36,14 @@ jobs:
           node-version: 22
           cache: npm
 
+      # `npm install` y no `npm ci`. El lockfile es multiplataforma y esta completo,
+      # pero npm no le agrega las entradas de @emnapi/core y @emnapi/wasi-threads al
+      # nivel superior: son peerDependencies de @napi-rs/wasm-runtime, que a su vez
+      # es una dependencia opcional wasm de sharp. En Linux `npm ci` las exige y
+      # aborta con EUSAGE; regenerar el lock no las agrega, en ninguna plataforma.
+      # `npm install` resuelve esa diferencia sin tocar las versiones fijadas.
       - name: Instalar dependencias
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       # PREVIEW=1 publica en nicolasalvarez.github.io/terra_compostaje/ en vez del
       # dominio propio. Para pasar a produccion: borrar este bloque `env` y el paso
