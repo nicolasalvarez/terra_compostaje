@@ -1,0 +1,52 @@
+# Dependabot revisa las dependencias y abre solo el pull request cuando alguna se
+# queda vieja o le descubren un problema de seguridad.
+#
+# Por qué está acá: el sitio se construye bajando unos 370 paquetes de terceros.
+# Ninguno corre en el navegador del visitante —lo que se publica es HTML y CSS ya
+# cocinados—, pero si a alguno de esos paquetes le envenenan una versión, el build
+# siguiente podría meter algo en el sitio. Es la única vía de entrada que tiene un
+# sitio estático, y esto es lo más barato para cerrarla.
+#
+# OJO: este archivo cubre las actualizaciones de rutina. Los avisos de
+# vulnerabilidad se prenden una sola vez y a mano, en
+# Settings → Code security → Dependabot alerts. Conviene prender también
+# "Dependabot security updates": ese abre el pull request en el momento, sin
+# esperar al lunes.
+
+version: 2
+updates:
+  # Las dependencias de npm: Astro, sharp, TypeScript y todo lo que arrastran.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Argentina/Cordoba
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: Dependencias
+
+    # Un solo pull request por semana con todo junto, en vez de uno por paquete.
+    # Para un proyecto de este tamaño, diez pull requests sueltos se vuelven ruido
+    # y se terminan ignorando, que es peor que no tener nada.
+    #
+    # Los saltos de versión mayor (Astro 7 → 8) quedan afuera del grupo a
+    # propósito: esos rompen cosas y hay que leerlos de a uno.
+    groups:
+      rutina:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+
+  # Las actions del workflow de despliegue. Están fijadas por SHA a propósito
+  # (el motivo está en deploy.yml); Dependabot entiende ese formato y actualiza
+  # el SHA junto con el comentario de la versión que va al lado.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      timezone: America/Argentina/Cordoba
+    commit-message:
+      prefix: Actions

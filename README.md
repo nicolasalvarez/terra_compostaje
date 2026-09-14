@@ -126,6 +126,21 @@ el dominio en GitHub hay que dejar el registro **sin proxear** (nube gris) hasta
 GitHub emita el certificado, y recién después volver a activar el proxy con SSL/TLS en
 modo **Full**.
 
+## Dependencias al día
+
+El sitio que se publica es HTML y CSS ya cocinados: nada de las dependencias llega al
+navegador del visitante. Pero para construirlo se bajan unos 370 paquetes de terceros, y
+si a alguno le envenenan una versión, el build siguiente podría meter algo en el
+resultado. Es la única vía de entrada que tiene un sitio estático.
+
+`.github/dependabot.yml` se ocupa de eso: los lunes agrupa las actualizaciones de npm en
+un solo pull request y una vez por mes revisa las actions del workflow. Los saltos de
+versión mayor vienen sueltos, para leerlos de a uno.
+
+Falta prenderlo del lado de GitHub, una sola vez: **Settings → Code security →
+Dependabot alerts**, y también *Dependabot security updates*, que ante una vulnerabilidad
+abre el pull request en el momento en vez de esperar al lunes.
+
 ## Cabeceras de seguridad
 
 GitHub Pages no deja mandar cabeceras propias, así que van en **Cloudflare → Rules →
@@ -235,6 +250,9 @@ documentadas en `resources/README.md`.
 - [ ] Banner de cookies con Google Consent Mode v2, antes de instalar el píxel de Meta o
       las etiquetas de Google Ads.
 - [ ] Cifras de impacto actualizadas.
+- [ ] Prender **Dependabot alerts** y **Dependabot security updates** en *Settings → Code
+      security*. El archivo de configuración ya está en el repo; esto es el interruptor
+      que falta del lado de GitHub.
 - [ ] Cargar las cabeceras de seguridad en Cloudflare. Los valores exactos están más
       abajo, en *"Cabeceras de seguridad"*: hay que pegarlos, no hay que decidir nada.
 - [ ] Confirmar la lista de clientes vigente y conseguir los logos que faltan.
