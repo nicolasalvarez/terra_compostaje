@@ -40,6 +40,20 @@ updates:
           - minor
           - patch
 
+    # TypeScript 7 queda afuera hasta nuevo aviso. La version 7 es el compilador
+    # reescrito y se instala como binarios por plataforma; @astrojs/check 0.9.10,
+    # que es lo que corre `npm run check`, todavia declara que solo acepta
+    # TypeScript 5 o 6. Con la 7 puesta, `npm install` aborta por conflicto de
+    # peer dependencies y el despliegue no llega ni a construir. Ya paso una vez
+    # (pull request #1, revertido).
+    #
+    # Cuando @astrojs/check acepte TypeScript 7, borrar este bloque y dejar que
+    # Dependabot vuelva a proponerlo.
+    ignore:
+      - dependency-name: typescript
+        versions:
+          - 7.x
+
   # Las actions del workflow de despliegue. Están fijadas por SHA a propósito
   # (el motivo está en deploy.yml); Dependabot entiende ese formato y actualiza
   # el SHA junto con el comentario de la versión que va al lado.
