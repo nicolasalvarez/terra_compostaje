@@ -233,6 +233,11 @@ documentadas en `resources/README.md`.
 
 ## Pendientes antes de publicar
 
+> Para lo que viene **después** de publicar —posicionamiento en buscadores, ficha de
+> Google Maps, enlaces, contenido— hay un plan aparte en
+> [`docs/posicionamiento.md`](docs/posicionamiento.md), con el porqué de cada cosa y el
+> orden en que conviene hacerlas.
+
 - [ ] **Salir del modo preview**: borrar del workflow el bloque `env` con `PREVIEW` y el
       paso *"Quitar el dominio propio"*. Es lo único que hay que recordar a mano: el
       prefijo de las rutas, el `robots.txt` y el `CNAME` se acomodan solos.
