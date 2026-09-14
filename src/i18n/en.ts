@@ -1,4 +1,5 @@
 import type es from './es';
+import { empresa } from '../data/empresa';
 
 const en: typeof es = {
   meta: {
@@ -31,11 +32,12 @@ const en: typeof es = {
 
   credencialesSelloAlt: "Certified B Corporation — view Terra's profile on B Lab",
 
+  // Ver la nota en es.ts: los números vienen de src/data/empresa.ts.
   credenciales: [
-    { dato: '190 t/day', etiqueta: 'Treatment capacity' },
-    { dato: '9 hectares', etiqueta: 'Own site on National Route 19' },
-    { dato: 'No. 000012108/24', etiqueta: 'Licensed waste operator' },
-    { dato: 'Since 2023', etiqueta: "Córdoba's first industrial plant" },
+    { dato: `${empresa.capacidadDiaria} t/day`, etiqueta: 'Treatment capacity' },
+    { dato: `${empresa.hectareas} hectares`, etiqueta: 'Own site on National Route 19' },
+    { dato: `No. ${empresa.registroOperador}`, etiqueta: 'Licensed waste operator' },
+    { dato: `Since ${empresa.anioFundacion}`, etiqueta: "Córdoba's first industrial plant" },
   ],
 
   caminos: {
@@ -89,7 +91,7 @@ const en: typeof es = {
     eyebrow: 'The plant',
     titulo: 'From waste to substrate in four stages',
     bajada:
-      'Open windrow composting on a nine-hectare site, a former aggregate quarry on National Route 19, 6 km from the Córdoba ring road.',
+      `Open windrow composting on a ${empresa.hectareas}-hectare site, a former aggregate quarry on National Route 19, 6 km from the Córdoba ring road.`,
     etapa: 'Stage',
     pasos: [
       {

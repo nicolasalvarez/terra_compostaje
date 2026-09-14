@@ -1,3 +1,5 @@
+import { empresa } from '../data/empresa';
+
 export default {
   meta: {
     titulo: 'Terra Compostaje · Tratamiento de residuos orgánicos en Córdoba',
@@ -29,11 +31,14 @@ export default {
 
   credencialesSelloAlt: 'Empresa B Certificada — ver el perfil de Terra en B Lab',
 
+  // Los números salen de src/data/empresa.ts y no escritos a mano: estaban
+  // duplicados en los dos idiomas, así que actualizar el dato de origen no
+  // cambiaba nada en el sitio, y era fácil corregir un idioma y olvidar el otro.
   credenciales: [
-    { dato: '190 t/día', etiqueta: 'Capacidad de tratamiento' },
-    { dato: '9 hectáreas', etiqueta: 'Predio propio sobre Ruta Nacional 19' },
-    { dato: 'N° 000012108/24', etiqueta: 'Operador de residuos habilitado' },
-    { dato: 'Desde 2023', etiqueta: 'Primera planta industrial de Córdoba' },
+    { dato: `${empresa.capacidadDiaria} t/día`, etiqueta: 'Capacidad de tratamiento' },
+    { dato: `${empresa.hectareas} hectáreas`, etiqueta: 'Predio propio sobre Ruta Nacional 19' },
+    { dato: `N° ${empresa.registroOperador}`, etiqueta: 'Operador de residuos habilitado' },
+    { dato: `Desde ${empresa.anioFundacion}`, etiqueta: 'Primera planta industrial de Córdoba' },
   ],
 
   caminos: {
@@ -87,7 +92,7 @@ export default {
     eyebrow: 'La planta',
     titulo: 'De residuo a sustrato en cuatro etapas',
     bajada:
-      'Compostaje de pilas abiertas en un predio de nueve hectáreas, una antigua cantera de áridos sobre la Ruta Nacional 19, a 6 km de la circunvalación.',
+      `Compostaje de pilas abiertas en un predio de ${empresa.hectareas} hectáreas, una antigua cantera de áridos sobre la Ruta Nacional 19, a 6 km de la circunvalación.`,
     etapa: 'Etapa',
     pasos: [
       {

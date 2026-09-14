@@ -43,6 +43,11 @@ Tres cosas para tener en cuenta:
 Los dos idiomas tienen la misma estructura: si agregás una clave en `es.ts`, TypeScript
 va a avisar que falta en `en.ts`.
 
+**Los números de la empresa no se escriben en los textos.** La capacidad de tratamiento,
+las hectáreas, el número de operador de residuos y el año de fundación salen de
+`src/data/empresa.ts`. Cambiás el dato ahí y se actualiza solo en los dos idiomas, en la
+tira de credenciales y en el texto de la sección de la planta.
+
 ## Cómo trabajar localmente
 
 Hace falta [Node.js](https://nodejs.org) 22 o superior.
@@ -53,6 +58,12 @@ npm run dev      # servidor local en http://localhost:4321
 npm run build    # genera el sitio en dist/
 npm run preview  # sirve dist/ para revisar el resultado final
 ```
+
+**Antes de subir cambios de texto:** `npm run check`. Revisa los tipos, y de paso
+garantiza que los dos idiomas estén completos: `src/i18n/en.ts` está declarado como
+`typeof es`, así que si agregás un texto en español y te olvidás del inglés, el chequeo
+falla y te dice qué clave falta y en qué línea. El despliegue lo corre solo y no publica
+si da error.
 
 ## Estructura
 

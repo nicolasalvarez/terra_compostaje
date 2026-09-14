@@ -45,6 +45,13 @@ jobs:
       - name: Instalar dependencias
         run: npm install --no-audit --no-fund
 
+      # Revisa tipos antes de construir. No es ceremonia: los diccionarios de
+      # idioma están tipados (`en.ts` es `typeof es`), así que si alguien agrega
+      # un texto en español y se olvida del inglés, esto lo frena acá en vez de
+      # publicar una página con un hueco. Tarda unos segundos.
+      - name: Revisar tipos
+        run: npm run check
+
       # PREVIEW=1 publica en nicolasalvarez.github.io/terra_compostaje/ en vez del
       # dominio propio. Para pasar a produccion: borrar este bloque `env` y el paso
       # "Quitar el dominio propio" de abajo. Nada mas.

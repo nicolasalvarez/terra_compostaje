@@ -15,6 +15,8 @@
     "js-yaml": "^5.4.2"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9"
+    "@astrojs/check": "^0.9.10",
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^6.0.3"
   }
 }
