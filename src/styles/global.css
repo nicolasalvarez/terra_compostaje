@@ -148,8 +148,14 @@ svg {
   max-width: 100%;
 }
 
+/* El anillo de foco tiene que contrastar 3:1 contra el fondo que tenga detrás
+   (WCAG 2.2). El naranja de marca no llega en casi ningún lado: 2,90:1 sobre
+   blanco, 2,68:1 sobre papel y 2,01:1 sobre lima; sólo pasa sobre el azul. El
+   naranja de texto pasa en las tres superficies claras (5,05 / 4,67 / 3,50:1)
+   y falla sobre el azul (2,38:1), así que los bloques azules lo cambian por
+   blanco (11,99:1). Ver Cta.astro y Caminos.astro. */
 :focus-visible {
-  outline: 3px solid var(--naranja);
+  outline: 3px solid var(--naranja-texto);
   outline-offset: 3px;
   border-radius: 2px;
 }

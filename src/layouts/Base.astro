@@ -11,9 +11,15 @@ interface Props {
   pagina: Pagina;
   titulo?: string;
   descripcion?: string;
+  /**
+   * Para la página 404. Una página de error no se indexa, y sobre todo no
+   * declara canónica: si apuntara a otra URL le estaría diciendo a Google que
+   * este error "es" esa página, que es la receta del soft 404.
+   */
+  sinIndexar?: boolean;
 }
 
-const { locale, pagina, titulo, descripcion } = Astro.props;
+const { locale, pagina, titulo, descripcion, sinIndexar = false } = Astro.props;
 const t = useTranslations(locale);
 
 const tituloFinal = titulo ?? t.meta.titulo;
@@ -52,9 +58,15 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tituloFinal}</title>
     <meta name="description" content={descFinal} />
-    <link rel="canonical" href={canonical} />
-    {alternos.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL(rutas[pagina].es, Astro.site).href} />
+    {sinIndexar ? (
+      <meta name="robots" content="noindex, follow" />
+    ) : (
+      <Fragment>
+        <link rel="canonical" href={canonical} />
+        {alternos.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+        <link rel="alternate" hreflang="x-default" href={new URL(rutas[pagina].es, Astro.site).href} />
+      </Fragment>
+    )}
 
     <meta
       http-equiv="Content-Security-Policy"
@@ -74,7 +86,19 @@ const jsonLd = {
     <meta property="og:description" content={descFinal} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={locale === 'es' ? 'es_AR' : 'en_US'} />
+
+    <!-- Imagen para cuando alguien comparte el enlace (WhatsApp, LinkedIn,
+         Facebook, Twitter). Sin esto no aparece vista previa y el enlace se ve
+         como texto pelado; `twitter:card` ya declaraba "summary_large_image",
+         que sin imagen no muestra nada. Tiene que ser una URL absoluta: los
+         servidores que la leen no resuelven rutas relativas. 1200x630 es la
+         medida que piden todos. -->
+    <meta property="og:image" content={new URL(conBase('/og.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.hero.altFoto} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL(conBase('/og.jpg'), Astro.site).href} />
 
     <!-- Datos estructurados para buscadores.
          OJO: `set:html` es una DIRECTIVA que se pone sobre un elemento, no un

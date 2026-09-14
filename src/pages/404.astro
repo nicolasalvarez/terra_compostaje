@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import { rutas } from '../i18n';
+
+// Página de error. GitHub Pages sirve este archivo ante cualquier URL que no
+// exista, venga de donde venga: por eso no sabe en qué idioma está el visitante
+// y muestra los dos a la vez. Es el único lugar del sitio donde los textos van
+// escritos acá y no en src/i18n: son bilingües dentro de la misma página, así
+// que pasarlos por el diccionario no aportaría nada.
+//
+// `sinIndexar` evita que Google la tome como una página más: sin eso quedaría
+// con canónica propia y terminaría apareciendo en los resultados.
+---
+
+<Base
+  locale="es"
+  pagina="home"
+  sinIndexar
+  titulo="Página no encontrada"
+  descripcion="La página que buscabas no existe o cambió de dirección."
+>
+  <section class="e404">
+    <div class="wrap">
+      <p class="num" aria-hidden="true">404</p>
+
+      <h1>Esta página no existe</h1>
+      <p class="bajada">
+        Puede que la dirección esté mal escrita o que hayamos movido el contenido.
+      </p>
+      <p class="acciones">
+        <a href={rutas.home.es} class="btn btn-naranja">Ir al inicio</a>
+        <a href={`${rutas.home.es}#contacto`} class="btn btn-linea">Contacto</a>
+      </p>
+
+      <hr />
+
+      <h2 lang="en">This page doesn’t exist</h2>
+      <p class="bajada" lang="en">
+        The address may be misspelled, or the content may have moved.
+      </p>
+      <p class="acciones" lang="en">
+        <a href={rutas.home.en} class="btn btn-naranja">Go to homepage</a>
+        <a href={`${rutas.home.en}#contacto`} class="btn btn-linea">Contact</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .e404 {
+    padding-block: clamp(56px, 9vw, 112px);
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* El lima sobre blanco da 1,44:1 y se lee lavado; además el manual lo pide
+     siempre acompañado de azul. Va como recuadro, igual que el resaltado del
+     titular de la portada: azul sobre lima son 14,55:1. */
+  .num {
+    display: inline-block;
+    padding: 2px 18px 6px;
+    font-family: var(--display);
+    font-size: clamp(56px, 11vw, 104px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--tinta);
+    background: var(--lima);
+    border-radius: 14px;
+  }
+
+  h1,
+  h2 {
+    margin-top: 12px;
+    font-size: clamp(28px, 4.4vw, 40px);
+  }
+
+  .bajada {
+    margin-top: 14px;
+    font-size: 16.5px;
+    line-height: 1.7;
+    color: var(--tinta-60);
+  }
+
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  hr {
+    margin-top: clamp(40px, 6vw, 64px);
+    border: 0;
+    border-top: 1px solid var(--linea);
+  }
+
+  hr + h2 {
+    margin-top: clamp(32px, 5vw, 48px);
+  }
+</style>
