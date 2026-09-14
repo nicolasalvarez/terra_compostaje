@@ -90,6 +90,11 @@ conversación del proyecto.
 
 Los logos de arriba no necesitan la tipografía: ya son curvas.
 
+## og/
+
+Plantillas HTML de las imágenes de vista previa para redes (`public/og.jpg` y
+`public/og-en.jpg`). Ver `og/README.md` para regenerarlas.
+
 ## fotos/
 
 48 fotos, redimensionadas a 2000 px de lado mayor y recomprimidas (~36 MB en total,

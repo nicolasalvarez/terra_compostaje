@@ -1,0 +1,36 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  @font-face { font-family:'Outfit'; src:url('../../public/fuentes/outfit-latin.woff2') format('woff2'); font-weight:400 700; font-display:block; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1200px; height:630px; overflow:hidden; }
+  .card {
+    position:relative; width:1200px; height:630px; display:flex; align-items:center;
+    background:#2A3653; font-family:'Outfit',sans-serif; overflow:hidden;
+  }
+  .foto {
+    position:absolute; right:-60px; top:50%; transform:translateY(-50%);
+    width:560px; height:560px; border-radius:50%; object-fit:cover;
+  }
+  .txt { position:relative; z-index:2; padding:0 0 90px 80px; width:700px; }
+  .logo { width:260px; height:auto; display:block; }
+  h1 {
+    margin-top:34px; font-size:46px; font-weight:700; line-height:1.12;
+    letter-spacing:-0.02em; color:#fff; max-width:15ch;
+  }
+  .hl { background:#D2E130; color:#2A3653; padding:0 10px; border-radius:6px; box-decoration-break:clone; }
+  p { margin-top:26px; font-size:23px; line-height:1.45; color:rgba(255,255,255,.82); max-width:30ch; }
+  .pie { position:absolute; left:80px; bottom:52px; display:flex; align-items:center; gap:20px; z-index:2; }
+  .pie img { height:64px; width:auto;  }
+  .pie span { font-size:19px; font-weight:500; color:rgba(255,255,255,.7); }
+</style>
+<div class="card">
+  <img class="foto" src="../fotos/proceso/manos-guantes-compost-02.jpg" alt="">
+  <div class="txt">
+    <img class="logo" src="../marca/logo-terra-blanco.svg" alt="">
+    <h1>Es hora de devolverle a nuestra tierra <span class="hl">todo lo que nos da</span></h1>
+  </div>
+  <div class="pie">
+    <img src="../marca/empresa-b-certificada-blanco.svg" alt="">
+    <span>Compostaje industrial · Córdoba, Argentina</span>
+  </div>
+</div>

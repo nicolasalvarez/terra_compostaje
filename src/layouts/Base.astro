@@ -25,6 +25,12 @@ const t = useTranslations(locale);
 const tituloFinal = titulo ?? t.meta.titulo;
 const descFinal = descripcion ?? t.meta.descripcion;
 const canonical = new URL(rutas[pagina][locale], Astro.site).href;
+
+// Imagen de vista previa, una por idioma: el titular de la tarjeta está escrito
+// en el idioma de la página. Se generan desde resources/og/ (ver el README de
+// esa carpeta). La bajada del logo queda en español en las dos, porque
+// "Compostaje Regenerativo" es marca registrada y no se traduce.
+const ogImagen = new URL(conBase(locale === 'en' ? '/og-en.jpg' : '/og.jpg'), Astro.site).href;
 const alternos = (Object.keys(rutas[pagina]) as Locale[]).map((l) => ({
   hreflang: l === 'es' ? 'es-AR' : 'en',
   href: new URL(rutas[pagina][l], Astro.site).href,
@@ -93,12 +99,12 @@ const jsonLd = {
          que sin imagen no muestra nada. Tiene que ser una URL absoluta: los
          servidores que la leen no resuelven rutas relativas. 1200x630 es la
          medida que piden todos. -->
-    <meta property="og:image" content={new URL(conBase('/og.jpg'), Astro.site).href} />
+    <meta property="og:image" content={ogImagen} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={t.hero.altFoto} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={new URL(conBase('/og.jpg'), Astro.site).href} />
+    <meta name="twitter:image" content={ogImagen} />
 
     <!-- Datos estructurados para buscadores.
          OJO: `set:html` es una DIRECTIVA que se pone sobre un elemento, no un
